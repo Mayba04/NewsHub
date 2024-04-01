@@ -1,4 +1,4 @@
-package com.news_hub.configuration.security;
+package com.news_hub.configuration;
 
 import lombok.AllArgsConstructor;
 
@@ -36,4 +36,6 @@ public class CorsConfig implements WebMvcConfigurer {
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
+
+    
 }
