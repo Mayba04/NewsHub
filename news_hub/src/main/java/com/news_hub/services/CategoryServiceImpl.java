@@ -62,10 +62,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
     @Override
     public void deleteCategory(int id) throws IOException {
-        var entity = categoryRepository.findById(id).orElse(null);
+        // Перевіряємо, чи сутність існує перед її видаленням
         if (categoryRepository.existsById(id)) {
-//            categoryRepository.save(entity);
             categoryRepository.deleteById(id);
+        } else {
+            throw new IOException("Category not found with id: " + id);
         }
     }
 }
