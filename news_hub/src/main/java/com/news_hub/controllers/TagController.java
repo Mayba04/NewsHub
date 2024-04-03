@@ -2,6 +2,9 @@ package com.news_hub.controllers;
 
 
 import lombok.AllArgsConstructor;
+
+import com.news_hub.dto.post.PostEditDTO;
+import com.news_hub.dto.post.PostItemDTO;
 import com.news_hub.dto.tag.TagCreateDTO;
 import com.news_hub.dto.tag.TagEditDTO;
 import com.news_hub.dto.tag.TagItemDTO;
@@ -28,15 +31,16 @@ public class TagController {
     private final CategoryService categoryService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<TagItemDTO> getById(@PathVariable int id) {
+    public ResponseEntity<TagItemDTO> getById(@PathVariable("id") int id) {
         var result = tagService.getById(id);
         if (result == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
     @GetMapping()
-    public ResponseEntity<List<TagItemDTO>> gtAll() {
+    public ResponseEntity<List<TagItemDTO>> getAll() {
         try {
             List<TagItemDTO> tags = tagService.getAll(Sort.by("id"));
             return new ResponseEntity<>(tags, HttpStatus.OK);
@@ -44,6 +48,7 @@ public class TagController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
     @GetMapping("/byPage")
     public ResponseEntity<Page<TagItemDTO>> getAllByPage(@RequestParam(value = "page", defaultValue = "0") int page,
                                                          @RequestParam(value = "size", defaultValue = "10") int size) {
@@ -65,8 +70,11 @@ public class TagController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+    
+
+
     @PutMapping("/{id}")
-    public ResponseEntity<TagItemDTO> editTag(@ModelAttribute TagEditDTO dto) {
+    public ResponseEntity<TagItemDTO> editTag(@RequestBody TagEditDTO dto) {
         try {
             var result = tagService.editTag(dto);
             return new ResponseEntity<>(result, HttpStatus.OK);
@@ -75,7 +83,7 @@ public class TagController {
         }
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteTag(@PathVariable int id) throws IOException {
+    public ResponseEntity<String> deletePost(@PathVariable("id") int id) throws IOException {
         try {
             tagService.deleteTag(id);
             return new ResponseEntity<>("Success", HttpStatus.NO_CONTENT);

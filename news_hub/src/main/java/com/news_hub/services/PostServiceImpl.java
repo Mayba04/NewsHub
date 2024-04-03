@@ -19,6 +19,7 @@ import com.news_hub.storage.FileSaveFormat;
 import com.news_hub.storage.StorageService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -47,10 +48,8 @@ public class PostServiceImpl implements PostService {
 
         PostItemDTO postItemDTO = postMapper.postItemDTO(postEntity);
 
-//        // Set dateCreated
         postItemDTO.setDateCreated(postEntity.getDateCreated());
 
-        // Set tags
         List<TagItemDTO> tagItemDTOs = postEntity.getPostTags().stream()
                 .map(postTagMapEntity -> tagMapper.tagItemDTO(postTagMapEntity.getTag()))
                 .collect(Collectors.toList());
@@ -67,6 +66,35 @@ public class PostServiceImpl implements PostService {
 
         return postItemDTO;
     }
+
+    @Override
+    public List<PostItemDTO> getAll() {
+        List<PostEntity> postEntities = postRepository.findAll(); // Retrieves all posts
+        List<PostItemDTO> postItemDTOs = postEntities.stream().map(postEntity -> {
+            PostItemDTO postItemDTO = postMapper.postItemDTO(postEntity);
+
+            postItemDTO.setDateCreated(postEntity.getDateCreated());
+
+            List<TagItemDTO> tagItemDTOs = postEntity.getPostTags().stream()
+                    .map(postTagMapEntity -> tagMapper.tagItemDTO(postTagMapEntity.getTag()))
+                    .collect(Collectors.toList());
+            postItemDTO.setTags(tagItemDTOs);
+
+            List<String> imageNames = postImageRepository.findImageNamesByPost(postEntity);
+            postItemDTO.setFiles(imageNames);
+
+            var items = new ArrayList<String>();
+            for (var img : postEntity.getPostImages()) {
+                items.add(img.getName());
+            }
+            postItemDTO.setFiles(items);
+
+            return postItemDTO;
+        }).collect(Collectors.toList());
+
+        return postItemDTOs;
+    }
+
 
     @Override
     public PostSearchDTO searchGetAllPost(String category, String tag, Pageable pageable) {
@@ -134,9 +162,8 @@ public class PostServiceImpl implements PostService {
                 imageEntity.setDateCreated(LocalDateTime.now());
                 imageEntity.setPost(post);
                 postImageRepository.save(imageEntity);
-            }
-            catch (Exception ex) {
-                System.out.println(ex.getMessage());
+            } catch (Exception ex) {
+                ex.printStackTrace(); 
             }
         }
         return postMapper.postItemDTO(post);
@@ -158,8 +185,6 @@ public class PostServiceImpl implements PostService {
 
                 postRepository.save(post);
                 var imagesDb = post.getPostImages();
-
-                //Видаляємо фото, якщо потрібно
 
                 for (var image : imagesDb) {
                      if (!isAnyImage(model.getOldPhotos(), image)) {
@@ -244,4 +269,7 @@ public class PostServiceImpl implements PostService {
         }
         return result;
     }
+
+    
+   
 }
