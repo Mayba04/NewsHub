@@ -25,6 +25,6 @@ public class CategoryEntity {
     @Column(name="date_created")
     private LocalDateTime creationTime;
     
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostEntity> posts;
 }

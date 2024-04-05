@@ -3,8 +3,6 @@ package com.news_hub.controllers;
 
 import lombok.AllArgsConstructor;
 
-import com.news_hub.dto.post.PostEditDTO;
-import com.news_hub.dto.post.PostItemDTO;
 import com.news_hub.dto.tag.TagCreateDTO;
 import com.news_hub.dto.tag.TagEditDTO;
 import com.news_hub.dto.tag.TagItemDTO;
@@ -22,6 +20,7 @@ import org.springframework.data.domain.PageRequest;
 import java.io.IOException;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @AllArgsConstructor
 @RequestMapping("api/tags")
@@ -83,7 +82,7 @@ public class TagController {
         }
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletePost(@PathVariable("id") int id) throws IOException {
+    public ResponseEntity<String> deleteTag(@PathVariable("id") int id) throws IOException {
         try {
             tagService.deleteTag(id);
             return new ResponseEntity<>("Success", HttpStatus.NO_CONTENT);

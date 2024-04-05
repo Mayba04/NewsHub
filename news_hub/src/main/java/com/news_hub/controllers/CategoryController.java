@@ -5,18 +5,21 @@ import com.news_hub.dto.category.CategoryCreateDTO;
 import com.news_hub.dto.category.CategoryEditDTO;
 import com.news_hub.dto.category.CategoryItemDTO;
 import com.news_hub.services.CategoryService;
+import com.news_hub.storage.FileSaveFormat;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.MediaType;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @AllArgsConstructor
 @RequestMapping("api/categories")
@@ -56,18 +59,22 @@ public class CategoryController {
                 return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
             }
     }
-        @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<CategoryItemDTO> create(@ModelAttribute CategoryCreateDTO dto) {
         try {
             var result = categoryService.create(dto);
+
+            
+
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
     
-    @PutMapping("/")
-    public ResponseEntity<CategoryItemDTO> editCategory(@RequestBody CategoryEditDTO dto) {
+    
+    @PutMapping(value="", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<CategoryItemDTO> editCategory(@ModelAttribute CategoryEditDTO dto) {
         try {
             var result = categoryService.editCategory(dto);
             if (result == null) {
@@ -79,8 +86,8 @@ public class CategoryController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+   
 
-    
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCategory(@PathVariable("id") int id) throws IOException {
         try {
@@ -90,6 +97,7 @@ public class CategoryController {
             return new ResponseEntity<>("Error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    
 
 
 }

@@ -21,6 +21,6 @@ public class TagEntity {
     @Column(length = 100, nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "tag")
+    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostTagMapEntity> postTags = new ArrayList<>();
 }

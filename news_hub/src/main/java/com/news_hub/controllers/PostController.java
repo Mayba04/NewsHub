@@ -1,18 +1,14 @@
 package com.news_hub.controllers;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
-import com.news_hub.dto.category.CategoryCreateDTO;
-import com.news_hub.dto.category.CategoryItemDTO;
 import com.news_hub.dto.post.PostCreateDTO;
 import com.news_hub.dto.post.PostEditDTO;
 import com.news_hub.dto.post.PostItemDTO;
 import com.news_hub.dto.post.PostSearchDTO;
 import com.news_hub.services.PostService;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -24,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @AllArgsConstructor
 @RequestMapping("api/posts")
