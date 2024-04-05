@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import com.news_hub.dto.tag.TagCreateDTO;
 import com.news_hub.dto.tag.TagEditDTO;
 import com.news_hub.dto.tag.TagItemDTO;
-import com.news_hub.services.CategoryService;
 import com.news_hub.services.TagService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,8 +26,6 @@ import java.util.List;
 public class TagController {
     private final TagService tagService;
 
-    private final CategoryService categoryService;
-
     @GetMapping("/{id}")
     public ResponseEntity<TagItemDTO> getById(@PathVariable("id") int id) {
         var result = tagService.getById(id);
@@ -48,7 +45,7 @@ public class TagController {
         }
     }
 
-    @GetMapping("/byPage")
+    @GetMapping("/search")
     public ResponseEntity<Page<TagItemDTO>> getAllByPage(@RequestParam(value = "page", defaultValue = "0") int page,
                                                          @RequestParam(value = "size", defaultValue = "10") int size) {
         try {
@@ -73,7 +70,7 @@ public class TagController {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<TagItemDTO> editTag(@RequestBody TagEditDTO dto) {
+    public ResponseEntity<TagItemDTO> editTag(@PathVariable("id") int id, @RequestBody TagEditDTO dto) {
         try {
             var result = tagService.editTag(dto);
             return new ResponseEntity<>(result, HttpStatus.OK);
@@ -81,6 +78,7 @@ public class TagController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteTag(@PathVariable("id") int id) throws IOException {
         try {

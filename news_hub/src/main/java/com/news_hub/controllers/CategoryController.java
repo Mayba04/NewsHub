@@ -5,7 +5,6 @@ import com.news_hub.dto.category.CategoryCreateDTO;
 import com.news_hub.dto.category.CategoryEditDTO;
 import com.news_hub.dto.category.CategoryItemDTO;
 import com.news_hub.services.CategoryService;
-import com.news_hub.storage.FileSaveFormat;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -16,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.MediaType;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:5173")
@@ -97,7 +95,4 @@ public class CategoryController {
             return new ResponseEntity<>("Error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
-
-
 }

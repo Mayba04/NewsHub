@@ -31,7 +31,11 @@ const items: MenuItem[] = [
       getItem(<Link to={"/"}>Перегляд категорій</Link>, '2'),
       getItem(<Link to={"/category/create"}>Додати категорію</Link>, '3'),
     ]),
-    getItem(<Link to={"/product"}>Товари</Link>, '4', <DesktopOutlined />),
+    getItem('Теги', 'sub1', <PieChartOutlined />, [
+        getItem(<Link to={"/tag"}>Перегляд Тегів</Link>, '2'),
+        getItem(<Link to={"/tag/create"}>Додати Тег</Link>, '3'),
+      ]),
+    getItem(<Link to={"/tag"}>Tag</Link>, 'sub1', <DesktopOutlined />),
   ];
 
 const DefaultSider = () => {

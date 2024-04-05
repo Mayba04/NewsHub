@@ -11,5 +11,4 @@ public interface StorageService {
     void deleteImage(String fileName) throws IOException;
     String saveImageFromUrl(String imageUrl, FileSaveFormat format);
     String SaveImageBase64(String base64, FileSaveFormat format);
-
 }
